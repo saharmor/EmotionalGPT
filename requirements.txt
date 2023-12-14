@@ -3,3 +3,4 @@ openai
 requests
 opencv-python
 numpy
+playsound

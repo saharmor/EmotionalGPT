@@ -7,6 +7,8 @@ import cv2
 import numpy as np
 import errno
 
+from utils import get_next_file_name
+
 TEMP_IMG_FOLDERS = "frames"
 
 def encode_image(image_path):
@@ -40,14 +42,8 @@ def take_pic(video_cap):
         # Convert the PIL image back to an OpenCV image
         frame = cv2.cvtColor(np.array(resized_img), cv2.COLOR_RGB2BGR)
 
-        # Determine the next frame number
-        frame_files = [f for f in os.listdir(TEMP_IMG_FOLDERS) if re.match(r'frame_\d+\.jpg', f)]
-        frame_numbers = [int(re.search(r'\d+', f).group()) for f in frame_files]
-        next_frame_number = max(frame_numbers, default=0) + 1
-
-        # Save the frame as an image file
-        # frame_filename = f'frame_{next_frame_number:02}.jpg'
-        frame_filename = f'frame_{next_frame_number}.jpg'
+        frame_filename = get_next_file_name('frame', TEMP_IMG_FOLDERS, 'jpg')
+    
         path = os.path.join(TEMP_IMG_FOLDERS, frame_filename)
         cv2.imwrite(path, frame)
     else:
